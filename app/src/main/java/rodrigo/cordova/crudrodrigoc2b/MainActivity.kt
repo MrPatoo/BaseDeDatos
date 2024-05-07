@@ -38,14 +38,14 @@ class MainActivity : AppCompatActivity() {
                 val objConexion = Conexion().cadenaConexion()
 
                 //añado una variable que contenga PrepareStatement
-                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas (?, ?, ?)")!!
+                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas values(?, ?, ?)")!!
                 addMascota.setString(1,txtNombre.text.toString())
-                addMascota.setInt(1, txtPeso.text.toString().toInt())
-                addMascota.setInt(2,txtEdad.text.toString().toInt())
+                addMascota.setInt(2, txtPeso.text.toString().toInt())
+                addMascota.setInt(3,txtEdad.text.toString().toInt())
 
                 addMascota.executeUpdate()
 
-                Toast.makeText(this@MainActivity, "Mascota registrada", Toast.LENGTH_LONG).show()
+
             }
         }
 
