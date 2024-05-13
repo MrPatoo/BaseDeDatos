@@ -88,6 +88,13 @@ class MainActivity : AppCompatActivity() {
 
                 addMascota.executeUpdate()
 
+                //refrescar la lista
+                val nuevaMascota = obtenerDatos()
+                withContext(Dispatchers.Main){
+                    (rcvMascotas.adapter as? Adaptador)?.actualizarLista(nuevaMascota)
+
+                }
+
 
             }
         }
