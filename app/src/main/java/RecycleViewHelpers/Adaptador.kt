@@ -13,7 +13,7 @@ import rodrigo.cordova.crudrodrigoc2b.R
 
 class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapter<ViewHolder>() {
 
-    fun actualizarLista(nuevaLista:List<dataClassMascotas>){
+    fun actualizarLista(nuevaLista:List< dataClassMascotas>){
         Datos = nuevaLista
         notifyDataSetChanged()//Esto notifica al recyclerview que hay datos nuevos
     }
@@ -29,6 +29,8 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
         val producto = Datos[position]
         holder.textView.text = producto.nombreMascota
     }
+
+    
 
 
 }
