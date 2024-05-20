@@ -30,7 +30,7 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
         holder.textView.text = producto.nombreMascota
     }
 
-    
+
 
 
 }
