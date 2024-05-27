@@ -1,22 +1,22 @@
 package rodrigo.cordova.crudrodrigoc2b
 
 import Modelo.Conexion
+import Modelo.dataClassMascotas
 import RecyclerViewHelper.Adaptador
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dataClassMascotas
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +55,13 @@ class MainActivity : AppCompatActivity() {
 
             //Recorro todos los registros de la base de datos
             while (resultSet.next()){
+                val uuid = resultSet.getString("uuid")
                 val nombre = resultSet.getString("nombreMascota")
-                val mascota = dataClassMascotas(nombre)
+                val peso = resultSet.getInt("peso")
+                val edad = resultSet.getInt("edad")
+
+
+                val mascota = dataClassMascotas(uuid, nombre, peso, edad)
                 mascotas.add(mascota)
 
 
@@ -81,10 +86,11 @@ class MainActivity : AppCompatActivity() {
                 val objConexion = Conexion().cadenaConexion()
 
                 //añado una variable que contenga PrepareStatement
-                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas values(?, ?, ?)")!!
-                addMascota.setString(1,txtNombre.text.toString())
-                addMascota.setInt(2, txtPeso.text.toString().toInt())
-                addMascota.setInt(3,txtEdad.text.toString().toInt())
+                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas values(?, ?, ?, ?)")!!
+                addMascota.setString(1, UUID.randomUUID().toString())
+                addMascota.setString(2,txtNombre.text.toString())
+                addMascota.setInt(3, txtPeso.text.toString().toInt())
+                addMascota.setInt(4,txtEdad.text.toString().toInt())
 
                 addMascota.executeUpdate()
 

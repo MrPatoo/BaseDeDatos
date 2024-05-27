@@ -1,15 +1,14 @@
 package RecyclerViewHelper
 
 import Modelo.Conexion
+import Modelo.dataClassMascotas
 import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dataClassMascotas
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import rodrigo.cordova.crudrodrigoc2b.R
 
 
@@ -62,7 +61,7 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mascota = Datos[position]
-        holder.textView.text = mascota.nombreMascota
+        holder.textView.text = mascota.nombreMascotas
 
         //todo click en el icono de eliminar
         holder.btnEliminar.setOnClickListener{
@@ -75,7 +74,7 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
             builder.setMessage("¿Desea eliminar la mascota?")
 
             //botones
-            builder.setPositiveButton("si"){dialog, switch -> eliminarDatos(mascota.nombreMascota, position)
+            builder.setPositiveButton("si"){dialog, switch -> eliminarDatos(mascota.nombreMascotas, position)
 
             }
             builder.setNegativeButton("no"){dialog, which -> dialog.dismiss()
