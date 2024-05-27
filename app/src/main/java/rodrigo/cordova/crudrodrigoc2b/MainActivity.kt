@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 val objConexion = Conexion().cadenaConexion()
 
                 //añado una variable que contenga PrepareStatement
-                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas values(?, ?, ?, ?)")!!
+                val addMascota = objConexion?.prepareStatement("Insert into tbMascotas (uuid, nombremascota, peso, edad) values(?, ?, ?, ?)")!!
                 addMascota.setString(1, UUID.randomUUID().toString())
                 addMascota.setString(2,txtNombre.text.toString())
                 addMascota.setInt(3, txtPeso.text.toString().toInt())

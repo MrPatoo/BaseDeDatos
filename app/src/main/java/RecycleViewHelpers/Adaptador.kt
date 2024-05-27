@@ -5,11 +5,13 @@ import Modelo.dataClassMascotas
 import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import rodrigo.cordova.crudrodrigoc2b.R
+import java.util.UUID
 
 
 class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapter<ViewHolder>() {
@@ -89,6 +91,61 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
 
 
         }
+
+        //TODO: editar datos////////////
+
+        fun actualizarDatos(nuevoNombre: String, uuid: String){
+            GlobalScope.launch(Dispatchers.IO){
+
+                //1- crear un objeto de la clase conexion
+                val objConexion = Conexion().cadenaConexion()
+
+                //2- creo una variable con un prepareStatement
+                val updateMascota = objConexion?.prepareStatement("update tbMascotas set nombreMascota = ? where uuid = ?")!!
+                updateMascota.setString(1, nuevoNombre)
+                updateMascota.setString(2, uuid)
+
+                updateMascota.executeUpdate()
+            }
+        }
+
+        holder.btnEditar.setOnClickListener{
+
+
+                //creamos Alert
+                val context = holder.itemView.context
+
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("Actualizar")
+                builder.setMessage("¿Desea Actualizar la mascota?")
+
+                    val cuadroTexto = EditText(context)
+                    cuadroTexto.setHint(mascota.nombreMascotas)
+                    builder.setView(cuadroTexto)
+
+                //botones
+                builder.setPositiveButton("actualizar"){dialog, switch -> actualizarDatos(cuadroTexto.text.toString(), mascota.uuid)
+
+                }
+                builder.setNegativeButton("cancelar"){dialog, which -> dialog.dismiss()
+
+                }
+
+                val dialog = builder.create()
+                dialog.show()
+        }
+
+        fun actualizarLista(nuevaLista: List<dataClassMascotas>){
+            
+        }
+
+        fun actualicePantalla(uuid: String, nuevoNombre: String){
+            val index = Datos.indexOfFirst{it.uuid == uuid}
+           datos
+        }
+
+
+
 
 
     }
