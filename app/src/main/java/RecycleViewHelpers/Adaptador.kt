@@ -3,6 +3,7 @@ package RecyclerViewHelper
 import Modelo.Conexion
 import Modelo.dataClassMascotas
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
@@ -10,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import rodrigo.cordova.crudrodrigoc2b.R
+import rodrigo.cordova.crudrodrigoc2b.activity_Detalle_Mascota
 import java.util.UUID
 
 
@@ -94,6 +97,17 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
 
         //TODO: editar datos////////////
 
+        fun actualizarLista(nuevaLista: List<dataClassMascotas>){
+            Datos = nuevaLista
+            notifyDataSetChanged() //notifica al adaptador sobre los cambios
+        }
+
+        fun actualicePantalla(uuid: String, nuevoNombre: String){
+            val index = Datos.indexOfFirst{it.uuid == uuid}
+            Datos[index].nombreMascotas = nuevoNombre
+            notifyDataSetChanged()
+        }
+
         fun actualizarDatos(nuevoNombre: String, uuid: String){
             GlobalScope.launch(Dispatchers.IO){
 
@@ -106,6 +120,10 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
                 updateMascota.setString(2, uuid)
 
                 updateMascota.executeUpdate()
+
+                withContext(Dispatchers.Main){
+                    actualicePantalla(uuid, nuevoNombre)
+                }
             }
         }
 
@@ -135,13 +153,18 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
                 dialog.show()
         }
 
-        fun actualizarLista(nuevaLista: List<dataClassMascotas>){
-            
-        }
+    //todo: Click a la card completa
 
-        fun actualicePantalla(uuid: String, nuevoNombre: String){
-            val index = Datos.indexOfFirst{it.uuid == uuid}
-           datos
+        holder.itemView.setOnClickListener{
+            val context = holder.itemView.context
+
+            val pantallaDetalle = Intent(context, activity_Detalle_Mascota::class.java)
+            pantallaDetalle.putExtra("MascotaUUID", mascota.uuid)
+            pantallaDetalle.putExtra("nombre", mascota.nombreMascotas)
+            pantallaDetalle.putExtra("peso", mascota.peso)
+            pantallaDetalle.putExtra("edad", mascota.edad)
+
+            context.startActivity(pantallaDetalle)
         }
 
 
@@ -149,6 +172,8 @@ class Adaptador(private var Datos: List<dataClassMascotas>) : RecyclerView.Adapt
 
 
     }
+
+
 
 
 
